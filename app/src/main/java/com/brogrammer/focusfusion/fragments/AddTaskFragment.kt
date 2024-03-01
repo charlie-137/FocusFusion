@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import com.brogrammer.focusfusion.model.TaskModel
 import com.brogrammer.focusfusion.utilities.Constants
 
-
 class AddTaskFragment : Fragment() {
 
     private lateinit var binding: FragmentAddTaskBinding
@@ -33,6 +32,20 @@ class AddTaskFragment : Fragment() {
 
         binding = FragmentAddTaskBinding.inflate(layoutInflater)
 
+
+        val taskId = arguments?.getInt("taskId")
+        Utils.showToast(requireContext(),taskId.toString())
+
+        val task = taskId?.let { DataManager.getTaskById(it) }
+
+        task?.let {
+            binding.taskName.setText(it.taskName)
+            binding.duration.setText(it.totalTaskDuration.toString())
+            val icon =  Constants.getIconDrawableRes(it.iconName!!)
+            selectedIconName = it.iconName
+            binding.iconImageView.setImageResource(icon!!)
+        }
+
         binding.iconBtn.setOnClickListener {
             showIconDialog()
         }
@@ -50,6 +63,7 @@ class AddTaskFragment : Fragment() {
         return binding.root
     }
 
+
     private fun closeTaskBtn() {
 
         findNavController().navigateUp()
@@ -59,11 +73,35 @@ class AddTaskFragment : Fragment() {
     private fun saveTaskBtn() {
         val taskName = binding.taskName.text.toString()
         val durationString = binding.duration.text.toString()
+
         if (taskName.isNotEmpty() && durationString.isNotEmpty() && selectedIconName != null) {
             val duration = durationString.toIntOrNull() ?: 0
+            val taskId = arguments?.getInt("taskId")
+
+            if(taskId!=null)
+            {
+                val task = taskId.let { DataManager.getTaskById(it) }
+                val originalIconName = task?.iconName
+
+                if(selectedIconName != originalIconName)
+                {
+                    // Icon has been changed, update the task with the new icon
+                    DataManager.updateTask(taskId, taskName, duration, selectedIconName, requireContext())
+                }else{
+                    // Icon remains unchanged, update the task without changing the icon
+                    DataManager.updateTask(taskId, taskName, duration, originalIconName, requireContext())
+                }
+
+                // Task Id is provided, Update the existing task
+//                DataManager.updateTask(taskId, taskName, duration, selectedIconName, requireContext())
+
+
+
+                return
+            }
+
             DataManager.addTask(taskName, duration, selectedIconName)
 //            DataManager.taskList.add(TaskModel(1,"Task1",60,"Timelapse",30))
-            Utils.showToast(requireContext(),"Task Added")
         } else {
             // Handle case when task name or duration is empty
             // For example, show an error message to the user
@@ -79,8 +117,6 @@ class AddTaskFragment : Fragment() {
 //                val iconName = icons.iconName
                 selectedIconName = iconName
                 binding.iconImageView.setImageResource(iconDrawableId)
-//                Toast.makeText(requireContext(), "Selected icon: $iconResId", Toast.LENGTH_SHORT).show()
-                Utils.showToast(requireContext(),"Icon Name: $iconName")
             }
         })
         iconDialog.show()

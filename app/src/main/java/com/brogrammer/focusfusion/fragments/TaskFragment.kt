@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 class TaskFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskBinding
+    private lateinit var navController: NavController // Define NavController variable
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +33,7 @@ class TaskFragment : Fragment() {
     ): View? {
 
         binding = FragmentTaskBinding.inflate(layoutInflater)
+        navController = findNavController()
 //        addTaskFragment()
 //        DataManager.initializeData()
 
@@ -68,7 +72,7 @@ class TaskFragment : Fragment() {
 //        }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        binding.recyclerView.adapter = TaskListAdapter(taskList)
+        binding.recyclerView.adapter = TaskListAdapter(requireContext(),taskList, navController)
 
     }
 

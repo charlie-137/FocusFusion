@@ -2,9 +2,10 @@ package com.brogrammer.focusfusion.model
 
 data class TaskModel(
     val id: Int,
-    val taskName: String?,
-    val totalTaskDuration: Int?,
-    val iconName: String?,
-    val completedTaskDuration: Int
+    var taskName: String?,
+    var totalTaskDuration: Int?,
+    var iconName: String?,
+    var completedTaskDuration: Int,
+    var playPauseState: Boolean = false
 )
 
