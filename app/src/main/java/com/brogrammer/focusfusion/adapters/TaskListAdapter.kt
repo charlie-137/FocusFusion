@@ -19,15 +19,17 @@ import com.brogrammer.focusfusion.fragments.TaskFragmentDirections
 import com.brogrammer.focusfusion.model.TaskModel
 import com.brogrammer.focusfusion.utilities.Constants
 import com.brogrammer.focusfusion.utilities.Utils
+import viewmodel.TaskViewModel
 
 class TaskListAdapter(
     private val context: Context,
     val itemList: ArrayList<TaskModel>,
-    private val navController: NavController // Inject NavController
+    private val navController: NavController, // Inject NavController
+    private val viewModel: TaskViewModel // Inject TaskViewModel
 ) : RecyclerView.Adapter<TaskListAdapter.MyViewHolder>() {
 
     // Variable to keep track of the currently playing task position
-    private var currentPlayingPosition: Int? = null
+    var currentPlayingPosition: Int? = null
 
     // Variable to keep track of the currently expanded item position
     private var expandedPosition: Int? = null
@@ -110,6 +112,9 @@ class TaskListAdapter(
 
                 // Update UI based on play/pause state
                 updatePlayButtonState(binding.playButton, task.playPauseState)
+
+                // Update the currentPlayingPosition in the ViewModel
+                viewModel.setCurrentPlayingPosition(currentPlayingPosition)
 
 //                if(!task.playPauseState)
 //                {
