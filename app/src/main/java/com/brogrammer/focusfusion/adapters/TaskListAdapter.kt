@@ -19,20 +19,20 @@ import com.brogrammer.focusfusion.fragments.TaskFragmentDirections
 import com.brogrammer.focusfusion.model.TaskModel
 import com.brogrammer.focusfusion.utilities.Constants
 import com.brogrammer.focusfusion.utilities.Utils
-import viewmodel.TaskViewModel
 
 class TaskListAdapter(
     private val context: Context,
     val itemList: ArrayList<TaskModel>,
-    private val navController: NavController, // Inject NavController
-    private val viewModel: TaskViewModel // Inject TaskViewModel
+    private val navController: NavController // Inject NavController
 ) : RecyclerView.Adapter<TaskListAdapter.MyViewHolder>() {
 
     // Variable to keep track of the currently playing task position
-    var currentPlayingPosition: Int? = null
+    private var currentPlayingPosition: Int? = null
 
     // Variable to keep track of the currently expanded item position
     private var expandedPosition: Int? = null
+
+    private var _clickedPosition: Int? = null
 
 //    inner class MyViewHolder(itemView: View)
 //        :RecyclerView.ViewHolder(itemView) {
@@ -70,6 +70,20 @@ class TaskListAdapter(
                 notifyDataSetChanged() // Notify adapter about the change in expansion state
             }
 
+            // Setting the toggle/expand card on the item Card View
+            // Adding on click listener to the item Card View
+//            binding.singleTaskItem.setOnClickListener {
+//                val position = adapterPosition
+//                if (position == expandedPosition) {
+//                    // If this item is already expanded, collapse it
+//                    expandedPosition = null
+//                } else {
+//                    // Expand this item
+//                    expandedPosition = position
+//                }
+//                notifyDataSetChanged() // Notify adapter about the change in expansion state
+//            }
+
             // Adding on click listener to the edit button
             binding.editBtn.setOnClickListener {
 
@@ -92,38 +106,53 @@ class TaskListAdapter(
 
             }
 
+//            binding.playButton.setOnClickListener {
+//                val clickedPosition = adapterPosition
+//                val task = itemList[clickedPosition]
+//
+//                if (clickedPosition == currentPlayingPosition) {
+//                    // Toggle play/pause state for the same item
+//                    task.playPauseState = !task.playPauseState
+//                } else {
+//                    // Deactivate play state of the previously playing item (if any)
+//                    currentPlayingPosition?.let { prevPlayingPos ->
+//                        itemList[prevPlayingPos].playPauseState = false
+//                        notifyItemChanged(prevPlayingPos)
+//                    }
+//                    // Activate play state of the clicked item
+//                    task.playPauseState = true
+//                    currentPlayingPosition = clickedPosition
+//                }
+//
+//                // Update UI based on play/pause state
+//                updatePlayButtonState(binding.playButton, task.playPauseState)
+//
+////                if(!task.playPauseState)
+////                {
+////                    binding.playButton.setImageResource(R.drawable.baseline_pause_circle_outline_24)
+////                    task.playPauseState=true
+////                }else{
+////                    binding.playButton.setImageResource(R.drawable.baseline_play_circle_outline_24)
+////                    task.playPauseState=false
+////                }
+//
+//            }
+
+
             binding.playButton.setOnClickListener {
                 val clickedPosition = adapterPosition
+                _clickedPosition = clickedPosition
                 val task = itemList[clickedPosition]
+                val taskId = task.id
+                DataManager.togglePlayPauseState(taskId)
+                val playPauseState = DataManager.getPlayPauseState(taskId)
+                updatePlayPauseButtonImage(binding.playButton,playPauseState!!)
+                notifyDataSetChanged()
 
-                if (clickedPosition == currentPlayingPosition) {
-                    // Toggle play/pause state for the same item
-                    task.playPauseState = !task.playPauseState
-                } else {
-                    // Deactivate play state of the previously playing item (if any)
-                    currentPlayingPosition?.let { prevPlayingPos ->
-                        itemList[prevPlayingPos].playPauseState = false
-                        notifyItemChanged(prevPlayingPos)
-                    }
-                    // Activate play state of the clicked item
-                    task.playPauseState = true
-                    currentPlayingPosition = clickedPosition
-                }
+                // Pass the task ID as an argument using a bundle
+                val bundle = bundleOf("taskId" to taskId)
+                navController.navigate(R.id.action_taskFragment_to_timerFragment, bundle)
 
-                // Update UI based on play/pause state
-                updatePlayButtonState(binding.playButton, task.playPauseState)
-
-                // Update the currentPlayingPosition in the ViewModel
-                viewModel.setCurrentPlayingPosition(currentPlayingPosition)
-
-//                if(!task.playPauseState)
-//                {
-//                    binding.playButton.setImageResource(R.drawable.baseline_pause_circle_outline_24)
-//                    task.playPauseState=true
-//                }else{
-//                    binding.playButton.setImageResource(R.drawable.baseline_play_circle_outline_24)
-//                    task.playPauseState=false
-//                }
 
             }
 
@@ -140,6 +169,15 @@ class TaskListAdapter(
     }
 
     private fun updatePlayButtonState(playButton: ImageView, isPlaying: Boolean) {
+        val drawableRes = if (isPlaying) {
+            R.drawable.baseline_pause_circle_outline_24
+        } else {
+            R.drawable.baseline_play_circle_outline_24
+        }
+        playButton.setImageResource(drawableRes)
+    }
+
+    private fun updatePlayPauseButtonImage(playButton: ImageView, isPlaying: Boolean) {
         val drawableRes = if (isPlaying) {
             R.drawable.baseline_pause_circle_outline_24
         } else {

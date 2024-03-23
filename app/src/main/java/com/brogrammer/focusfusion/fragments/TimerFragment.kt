@@ -19,11 +19,21 @@ class TimerFragment : Fragment() {
 
     private var selectedItemPosition: Int = -1
 
+    private var taskId:Int? = null
+
 
 
     override fun onResume() {
         super.onResume()
         setUpDropDownMenu()
+        taskId = arguments?.getInt("taskId")
+//        Utils.showToast(requireContext(),taskId.toString())
+        if(taskId!=null)
+        {
+            val task = DataManager.getTaskById(taskId!!)
+            binding.taskSpinner.setText(task?.taskName)
+        }
+
     }
 
     override fun onCreateView(
@@ -90,6 +100,7 @@ class TimerFragment : Fragment() {
             R.id.textViewItem,
             taskList
         )
+
 
         // Set the adapter to the spinner
         binding.taskSpinner.setAdapter(adapter)

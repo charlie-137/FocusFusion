@@ -13,8 +13,4 @@ class TaskViewModel : ViewModel() {
     fun resetCurrentPlayingPosition() {
         _currentPlayingPosition.value = null
     }
-
-    fun setCurrentPlayingPosition(position: Int?) {
-        _currentPlayingPosition.value = position
-    }
 }

@@ -44,6 +44,40 @@ object DataManager {
         taskList.removeAll { it.id == taskId }
     }
 
+    fun getPlayPauseState(taskId: Int): Boolean? {
+        val task = taskList.find { it.id == taskId }
+        return task?.playPauseState
+    }
+
+//    fun togglePlayPauseState(taskId: Int) {
+//        val task = taskList.find { it.id == taskId }
+//        task?.playPauseState = !task?.playPauseState!!
+//    }
+
+
+    private var currentPlayingTaskId: Int? = null
+
+    fun togglePlayPauseState(taskId: Int) {
+        val task = taskList.find { it.id == taskId }
+        task?.let {
+            if (it.id == currentPlayingTaskId) {
+                it.playPauseState = !it.playPauseState
+                if (!it.playPauseState) {
+                    currentPlayingTaskId = null
+                }
+            } else {
+                // Deactivate play state of all other tasks
+                taskList.forEach { otherTask ->
+                    if (otherTask.id != taskId) {
+                        otherTask.playPauseState = false
+                    }
+                }
+                it.playPauseState = true
+                currentPlayingTaskId = it.id
+            }
+        }
+    }
+
 }
 
 

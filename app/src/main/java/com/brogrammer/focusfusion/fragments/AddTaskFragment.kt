@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.viewModels
 import com.brogrammer.focusfusion.backend.DataManager
 import com.brogrammer.focusfusion.databinding.FragmentAddTaskBinding
 import com.brogrammer.focusfusion.dialogs.IconDialog
@@ -14,12 +13,10 @@ import com.brogrammer.focusfusion.utilities.Utils
 import androidx.navigation.fragment.findNavController
 import com.brogrammer.focusfusion.model.TaskModel
 import com.brogrammer.focusfusion.utilities.Constants
-import viewmodel.TaskViewModel
 
 class AddTaskFragment : Fragment() {
 
     private lateinit var binding: FragmentAddTaskBinding
-    private val viewModel: TaskViewModel by viewModels() // Initialize the viewModel property
 
     private val defaultIconName = Constants.allIconsNameToDrawable.keys.first() // Get the first icon name
     private val defaultIconDrawableId = Constants.allIconsNameToDrawable[defaultIconName] ?: 0 // Get the drawable id for the first icon
@@ -97,6 +94,9 @@ class AddTaskFragment : Fragment() {
 
                 // Task Id is provided, Update the existing task
 //                DataManager.updateTask(taskId, taskName, duration, selectedIconName, requireContext())
+
+
+
                 return
             }
 
@@ -107,10 +107,6 @@ class AddTaskFragment : Fragment() {
             // For example, show an error message to the user
             Toast.makeText(requireContext(), "Task name or duration is empty", Toast.LENGTH_SHORT).show()
         }
-
-        // Reset current playing position when adding a new task
-        viewModel.resetCurrentPlayingPosition()
-
     }
 
 

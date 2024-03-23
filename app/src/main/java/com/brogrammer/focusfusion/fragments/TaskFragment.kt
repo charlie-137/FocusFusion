@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,18 +19,12 @@ import com.brogrammer.focusfusion.databinding.FragmentTaskBinding
 import com.brogrammer.focusfusion.model.TaskModel
 import com.brogrammer.focusfusion.utilities.Utils
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import viewmodel.TaskViewModel
-
 
 
 class TaskFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskBinding
     private lateinit var navController: NavController // Define NavController variable
-    // Initialize TaskViewModel
-    private val viewModel: TaskViewModel by viewModels()
-    // Declare taskListAdapter as a class-level property
-    private lateinit var taskListAdapter: TaskListAdapter
 
 
     override fun onCreateView(
@@ -53,18 +46,6 @@ class TaskFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Initialize taskListAdapter
-        taskListAdapter = TaskListAdapter(requireContext(), arrayListOf(), navController, viewModel)
-
-
-        // Observe changes in currentPlayingPosition
-        viewModel.currentPlayingPosition.observe(viewLifecycleOwner) { position ->
-            // Update adapter with the new currentPlayingPosition
-            taskListAdapter.currentPlayingPosition = position
-            taskListAdapter.notifyDataSetChanged()
-        }
-
 
         binding.addTaskFab.setOnClickListener {
 
@@ -91,7 +72,7 @@ class TaskFragment : Fragment() {
 //        }
 
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
-        binding.recyclerView.adapter = TaskListAdapter(requireContext(),taskList, navController,viewModel)
+        binding.recyclerView.adapter = TaskListAdapter(requireContext(),taskList, navController)
 
     }
 
