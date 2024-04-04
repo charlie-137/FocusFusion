@@ -7,4 +7,9 @@
 
     <color name="colorAccent">#FF4081</color>
 
+
+    <color name="transparent">#00000000</color>
+    <color name="timer_track_color">#cfe8ff</color>
+    <color name="timer_indicator_color">#3990e0</color>
+
 </resources>

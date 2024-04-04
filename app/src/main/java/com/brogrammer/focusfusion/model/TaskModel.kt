@@ -5,7 +5,7 @@ data class TaskModel(
     var taskName: String?,
     var totalTaskDuration: Int?,
     var iconName: String?,
-    var completedTaskDuration: Int,
+    var completedTaskDuration: Int = 0,
     var playPauseState: Boolean = false
 )
 

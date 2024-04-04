@@ -227,7 +227,9 @@ class TaskListAdapter(
 
         holder.binding.apply {
             taskTitle.text = task.taskName
+            taskElapsedTime.text = task.completedTaskDuration.toString()
             taskTotalTime.text = task.totalTaskDuration.toString()
+
             taskIcon.setImageResource(iconImage!!)
 
         }

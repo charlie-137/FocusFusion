@@ -51,7 +51,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 >
 
-                <AutoCompleteTextView
+                 <AutoCompleteTextView
                     android:id="@+id/taskSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -81,7 +81,7 @@
                         android:id="@+id/dailyGoalTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Daily Goal:-"
+                        android:text="Daily Goal: "
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         app:layout_constraintTop_toBottomOf="@+id/taskSpinnerLayout"
@@ -92,7 +92,6 @@
                         android:id="@+id/dailyGoal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10"
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         app:layout_constraintTop_toBottomOf="@+id/taskSpinnerLayout"
@@ -111,7 +110,7 @@
                         android:id="@+id/completedGoalTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Completed:-"
+                        android:text="Completed: "
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         app:layout_constraintTop_toBottomOf="@+id/taskSpinnerLayout"
@@ -122,7 +121,6 @@
                         android:id="@+id/completedGoal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5"
                         android:textColor="@color/black"
                         android:textSize="15sp"
                         app:layout_constraintTop_toBottomOf="@+id/taskSpinnerLayout"
@@ -142,6 +140,90 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
+
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="25dp"
+        app:indicatorColor="@color/timer_indicator_color"
+        app:indicatorSize="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/taskDetails"
+        app:trackColor="@color/timer_track_color"
+        app:trackCornerRadius="10dp"
+        app:trackThickness="15dp">
+
+    </com.google.android.material.progressindicator.CircularProgressIndicator>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/progressBar"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
+        app:layout_constraintTop_toTopOf="@+id/progressBar">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Time Remaining:"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/progressBar" />
+
+        <TextView
+            android:id="@+id/elapsedTimeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="00:00:00"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@+id/progressBar"
+        app:layout_constraintStart_toStartOf="@+id/progressBar"
+        app:layout_constraintTop_toBottomOf="@+id/progressBar">
+
+        <Button
+            android:id="@+id/startButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:text="Start" />
+
+        <Button
+            android:id="@+id/pauseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:text="Pause" />
+
+        <Button
+            android:id="@+id/resumeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:text="Resume" />
+
+
+    </LinearLayout>
+
+
 
     <Button
         android:id="@+id/toastList"
